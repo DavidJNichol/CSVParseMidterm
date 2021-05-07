@@ -1,36 +1,44 @@
 #include "CsvParser.h"
+#include <cassert>
 
-/*
-* Parses through csv file line by line and returns the data
-* in vector of vector of strings.
-*/
-std::vector<std::string> getLines(const std::string &path) 
+std::vector<std::string> ParseFile(const std::string &path) 
 {
-	std::fstream fs;
+	std::fstream fileStream;
 
-	fs.open(path.c_str(), std::ios::in);
+	// not sure why I need to use c_str for this. Maybe because path is a ref?
+	fileStream.open(path.c_str(), std::ios::in); 
 
-	std::vector<std::string> lines = std::vector<std::string>();
+	assert(fileStream.is_open()); // assert that fstream open worked
 
-	std::string temp;
 	std::string line;
 
-	while (getline(fs, line)) 
-    {
-		//getline(fs, line);
-		lines.push_back(line);
+	std::vector<std::string> lines = std::vector<std::string>();		
+
+	while (getline(fileStream, line)) // parsing into string happens here until filestream is empty
+    {		
+		lines.push_back(line); // add the next line into vector		
 	}
-	//std::move(lines);
+
+	assert(lines.size() == 500);// assert 500 lines are printed
+
 	return lines;
 }
 
 int main()
 {
-    std::vector<std::string> gl = getLines("/home/cuser/Desktop/MidtermDavidNichol/sample.csv");
+    std::vector<std::string> students = ParseFile("/home/cuser/Desktop/CSVParseMidterm/sample.csv"); 
+	// students now contains lines vector	
 
-	for (int i = 0; i < gl.size()-10; i++) 
+	int studentNumber = 1;
+
+	for (int i = 0; i < students.size(); i++) 
     {
-		std::cout << gl[i] << std::endl;
+		// assert that each line follows the sample format
+		assert(students[i] == studentNumber + ",Student,McStudentface,mmcstudentface@school.edu" == 0); 
+		std::cout << students[i] << std::endl; // print it baby
+		studentNumber++;
 	}
+
+	assert(students.size() == 500); // assert 500 lines are printed
 
 }

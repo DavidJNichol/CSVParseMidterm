@@ -9,3 +9,4 @@ add_executable(CSVParser src/CsvParser.cpp)
 include_directories(.)
 
 set(MAIN_FILE src/CsvParser.cpp)
+
